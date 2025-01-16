@@ -1,4 +1,3 @@
 [workspace]
-members = ["rtoy_macros", "rtoy", "rtoy_runtime"]
-exclude = ["tests/component_test"]
+members = ["rtoy", "rtoy_runtime"]
 resolver = "2"

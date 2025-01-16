@@ -1,10 +1,14 @@
 use rtoy;
 
-fn main() {
-    let mut engine = rtoy::engine::Engine::new();
-    engine.load_component("tests/component_test/target/debug/libcomponent_test.so");
+fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let my_component =
+        rtoy::component::LuaComponent::new("../../tests/lua_component/my_component.lua")?;
 
-    let my_component = rtoy::component::Component::new("MyComponent", engine);
+    my_component.ready()?;
 
-    my_component.unwrap().update();
+    for _ in 0..10 {
+        my_component.update(10.0)?;
+    }
+
+    Ok(())
 }
