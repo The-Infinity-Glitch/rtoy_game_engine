@@ -1,3 +1,5 @@
+-- local rust_module = require("rust_module")
+
 local my_var = 1
 
 function on_ready( ... )

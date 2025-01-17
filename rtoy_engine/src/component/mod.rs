@@ -1,6 +1,7 @@
 use crate::*;
 use mlua::prelude::*;
 
+#[derive(Clone)]
 pub struct LuaComponent {
     lua_state: Lua,
     script: String,
@@ -8,21 +9,23 @@ pub struct LuaComponent {
 
 impl LuaComponent {
     pub fn new(path: &str) -> Result<Self, String> {
-        let lua = Lua::new();
-        let script = match utils::fs::read_file(path) {
-            Ok(script) => script,
-            Err(code) => return Err(code),
-        };
+        unsafe {
+            let lua = Lua::unsafe_new();
+            let script = match utils::fs::read_file(path) {
+                Ok(script) => script.1,
+                Err(code) => return Err(code),
+            };
 
-        match lua.load(script.clone()).exec() {
-            Ok(_) => {}
-            Err(code) => return Err(code.to_string()),
-        };
+            match lua.load(script.clone()).exec() {
+                Ok(_) => {}
+                Err(code) => return Err(code.to_string()),
+            };
 
-        Ok(Self {
-            lua_state: lua,
-            script,
-        })
+            Ok(Self {
+                lua_state: lua,
+                script,
+            })
+        }
     }
 
     pub fn get_script(&self) -> String {

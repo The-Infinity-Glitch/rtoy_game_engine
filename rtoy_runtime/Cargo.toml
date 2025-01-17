@@ -4,4 +4,4 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-rtoy = { path = "../rtoy" }
+rtoy_engine = { path = "../rtoy_engine" }
