@@ -4,4 +4,6 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+gl = "0.14.0"
+glfw = "0.59.0"
 mlua = { version = "0.10.2", features = ["lua54", "macros"] }

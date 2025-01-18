@@ -35,11 +35,31 @@ pub fn read_file(path: &str) -> Result<(String, String), String> {
     Ok((file_name.to_string(), content))
 }
 
-pub fn read_file_full_path(path: &str) -> Result<String, String> {
-    let content = match fs::read_to_string(path) {
-        Ok(content) => content,
-        Err(code) => return Err(code.to_string()),
+pub fn read_file_full_path(path: &str) -> Result<(String, String), String> {
+    let base_path = match std::path::PathBuf::from_str(path) {
+        Ok(path) => path,
+        Err(code) => return Err(format!("{} -> {}", path, code.to_string())),
     };
 
-    Ok(content)
+    if !base_path.is_file() {
+        return Err(format!("{} -> Isn't a file", path));
+    }
+
+    let mut base_path_clone = base_path.clone();
+    base_path_clone.set_extension("");
+
+    let file_name = match base_path_clone.file_name() {
+        Some(name) => match name.to_str() {
+            Some(name) => name,
+            None => return Err(format!("{} -> Failed to convert file name to str", path)),
+        },
+        None => return Err(format!("{} -> Failed to get file name", path)),
+    };
+
+    let content = match fs::read_to_string(path) {
+        Ok(content) => content,
+        Err(code) => return Err(format!("{} -> {}", path, code.to_string())),
+    };
+
+    Ok((file_name.to_string(), content))
 }
