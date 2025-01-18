@@ -15,15 +15,15 @@ fn main() {
 
     message_stack.collect_error(my_component.ready());
 
-    let backend = rtoy_engine::backend::WindowBackend::GlfwBackend(message_stack.collect_error(
-        rtoy_engine::backend::glfw::Glfw::new(
+    let mut backend = rtoy_engine::backend::WindowBackend::GlfwBackend(
+        message_stack.collect_error(rtoy_engine::backend::glfw::Glfw::new(
             (3, 3),
             rtoy_engine::backend::glfw::glfw::OpenGlProfileHint::Core,
-        ),
-    ));
+        )),
+    );
 
     let window = message_stack.collect_error(rtoy_engine::window::Window::new(
-        backend,
+        backend.clone(),
         "Test",
         800,
         600,
@@ -34,5 +34,13 @@ fn main() {
         message_stack.collect_error(my_component.update(10.0));
     }
 
-    loop {}
+    loop {
+        let events = window.process_window_events();
+
+        if events.len() > 0 {
+            dbg!(events);
+        }
+
+        backend.poll_events();
+    }
 }

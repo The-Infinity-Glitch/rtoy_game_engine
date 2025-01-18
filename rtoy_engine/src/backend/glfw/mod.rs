@@ -29,6 +29,10 @@ impl Glfw {
     pub fn get_context(&self) -> glfw::Glfw {
         self.context.clone()
     }
+
+    pub fn poll_events(&mut self) {
+        self.context.poll_events();
+    }
 }
 
 pub fn glfw_error_callback_function(_err: glfw::Error, _description: String) {}
@@ -69,18 +73,18 @@ impl GlfwWindow {
         }
     }
 
-    pub fn process_glfw_window_events(
-        self,
-        window: &mut glfw::Window,
-        events: &glfw::GlfwReceiver<(f64, glfw::WindowEvent)>,
-    ) {
-        for (_, event) in glfw::flush_messages(events) {
+    pub fn process_glfw_window_events(&self) -> Vec<input::Key> {
+        let mut events: Vec<input::Key> = Vec::new();
+
+        for (_, event) in glfw::flush_messages(&self.events) {
             match event {
-                glfw::WindowEvent::Key(glfw::Key::Escape, _, glfw::Action::Press, _) => {
-                    window.set_should_close(true)
+                glfw::WindowEvent::Key(key, scancode, action, modifiers) => {
+                    events.push(input::Key::from_glfw(key, scancode, action, modifiers));
                 }
                 _ => {}
             }
         }
+
+        events
     }
 }

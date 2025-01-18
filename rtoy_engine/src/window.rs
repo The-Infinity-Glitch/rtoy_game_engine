@@ -37,4 +37,14 @@ impl Window {
             }
         }
     }
+
+    pub fn process_window_events(&self) -> Vec<input::Key> {
+        match self.backend {
+            backend::WindowBackend::GlfwBackend(_) => match &self.data {
+                WindowData::GlfwWindow(glfw_window) => {
+                    return glfw_window.process_glfw_window_events()
+                }
+            },
+        };
+    }
 }
