@@ -38,6 +38,14 @@ impl Window {
         }
     }
 
+    pub fn window_should_close(&self) -> bool {
+        match self.backend {
+            backend::WindowBackend::GlfwBackend(_) => match &self.data {
+                WindowData::GlfwWindow(glfw_window) => return glfw_window.window_should_close(),
+            },
+        }
+    }
+
     pub fn process_window_events(&self) -> Vec<input::Key> {
         match self.backend {
             backend::WindowBackend::GlfwBackend(_) => match &self.data {

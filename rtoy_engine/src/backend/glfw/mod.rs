@@ -73,6 +73,10 @@ impl GlfwWindow {
         }
     }
 
+    pub fn window_should_close(&self) -> bool {
+        self.window.should_close()
+    }
+
     pub fn process_glfw_window_events(&self) -> Vec<input::Key> {
         let mut events: Vec<input::Key> = Vec::new();
 

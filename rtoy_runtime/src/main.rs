@@ -1,7 +1,15 @@
 use rtoy_engine;
+mod runtime;
 
 fn main() {
-    let mut engine = rtoy_engine::engine::RToyEngine::new();
+    let mut runtime = runtime::RToyRuntime::new();
+    runtime.init(runtime::RToyRuntimeWindowBackend::Glfw);
+
+    runtime.new_window("Test", 800, 600, rtoy_engine::window::WindowMode::Windowed);
+
+    runtime.run();
+
+    /*
     let mut message_stack = rtoy_engine::message::MessageStack::new();
 
     message_stack
@@ -43,4 +51,5 @@ fn main() {
 
         backend.poll_events();
     }
+    */
 }
