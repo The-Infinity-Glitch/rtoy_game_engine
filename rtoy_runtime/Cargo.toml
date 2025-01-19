@@ -4,4 +4,6 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+ron = "0.8.1"
 rtoy_engine = { path = "../rtoy_engine" }
+serde = { version = "1.0.217", features = ["derive"] }

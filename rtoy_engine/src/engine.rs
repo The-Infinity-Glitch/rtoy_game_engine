@@ -29,7 +29,10 @@ impl RToyEngine {
             return Err(format!("\"{}\" already registered", component_name));
         }
 
-        self.components.insert(component_name, new_component);
+        self.components
+            .insert(component_name.clone(), new_component);
+
+        println!("Registered component {}", component_name);
 
         Ok(())
     }

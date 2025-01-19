@@ -1,5 +1,7 @@
 use crate::*;
+use serde::{Deserialize, Serialize};
 
+#[derive(Clone, Serialize, Deserialize)]
 pub enum WindowMode {
     Windowed,
     FullScreen,
